@@ -103,7 +103,7 @@ Using Credentials to access  get method resource:
 
 Using the wrong credentials the get method  resource is refused:
 
-![plot](./postmanExample/getRequestWithInvalid.PNG)
+![plot](./postmanExample/GetRequestWithInvalid.PNG)
 
 Using Credentials to access post method resource(add new task):
 
