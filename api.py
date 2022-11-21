@@ -8,9 +8,11 @@ from encryption import real_encrypt
 app = Flask(__name__)
 api = Api(app)
 ma = Marshmallow(app)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
 db = SQLAlchemy(app)
 
+# basic auth used static username and password credentials
 auth = HTTPBasicAuth()
 USER_DATA = {
     "admin": "theEntertainer"
@@ -119,7 +121,7 @@ class Todo(Resource):
             abort(404, message=f"Could not find task with id {todo_id}")
         db.session.delete(todo)
         db.session.commit()
-        return 'Task Deleted', 204
+        return '', 204
 
     @auth.login_required
     def put(self, todo_id):
@@ -187,6 +189,8 @@ class TodoList(Resource):
         return encrypted string
         """
         tasks = TodoModel.query.order_by(TodoModel.id).all()
+        if not tasks:
+            abort(404, message=f"Currently, No task exists.")
         todos = todos_schema.dump(tasks)
         enc_to = real_encrypt(todos)
         return enc_to
